@@ -8,12 +8,11 @@ pow=(/Users/mike/.pow/*)
 function remove_files() {
     arr=("$@")
     for i in "${arr[@]}"; do
-        directory="${i##*/}"
-        filename="${directory%.*}"
-
-        if ! [[ "${repositories[*]}" == *"${filename}"* ]]; then
-            echo "removing.... ${i}"
-            sudo rm ${i}
+        path_to_file="${i}"
+        directory_name="${path_to_file##*/}"
+        if ! [[ "${repositories[*]}" == *"${directory_name%.*}"* ]]; then
+            echo "removing.... ${path_to_file}"
+            sudo rm ${path_to_file}
         fi
     done
 }
@@ -21,5 +20,8 @@ function remove_files() {
 remove_files "${sites_enabled_conf[@]}"
 remove_files "${sites_available_conf[@]}"
 remove_files "${pow[@]}"
+
+sudo apachectl restart
+powder up
 
 exit

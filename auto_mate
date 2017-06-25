@@ -7,19 +7,30 @@
 #
 # this will create a pow file, a apache virtual host file, restart apache, restart pow.
 
-if [[ -z $2 ]]
-then
-  sub=""
+if [ -z $1 ]; then
+    echo "...Directory name is required"
+    exit
 else
+    echo "...Creating virtual-host for ${1}"
+fi
+
+sub=""
+
+if ! [[ -z $2 ]]; then
+  echo "...Subfolder '${2}' was provided"
   sub="/$2"
 fi
 
 sudo echo "<VirtualHost *:80>
-    DocumentRoot '/Users/mike/code/$1$sub'
-    ServerName $1.dev
-</VirtualHost>" > /etc/apache2/sites-available/$1.conf
+    DocumentRoot '/Users/mike/code/${1}${sub}'
+    ServerName ${1}.dev
+</VirtualHost>" > /etc/apache2/sites-available/"${1}".conf
 
-sudo ln -s /etc/apache2/sites-available/$1.conf /etc/apache2/sites-enabled/$1.conf
-sudo echo '127.0.0.1:80' > ~/.pow/$1
+sudo ln -s /etc/apache2/sites-available/"${1}".conf /etc/apache2/sites-enabled/"${1}".conf
+sudo echo '127.0.0.1:80' > ~/.pow/"${1}"
 sudo apachectl restart
 powder up
+
+echo "...Environment ready. Go to: ${1}.dev"
+
+exit
