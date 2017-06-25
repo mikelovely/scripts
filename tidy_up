@@ -1,0 +1,25 @@
+#!/bin/bash
+
+repositories=(/Users/mike/code/*)
+sites_available_conf=(/etc/apache2/sites-available/*.conf)
+sites_enabled_conf=(/etc/apache2/sites-enabled/*.conf)
+pow=(/Users/mike/.pow/*)
+
+function remove_files() {
+    arr=("$@")
+    for i in "${arr[@]}"; do
+        directory="${i##*/}"
+        filename="${directory%.*}"
+
+        if ! [[ "${repositories[*]}" == *"${filename}"* ]]; then
+            echo "removing.... ${i}"
+            sudo rm ${i}
+        fi
+    done
+}
+
+remove_files "${sites_enabled_conf[@]}"
+remove_files "${sites_available_conf[@]}"
+remove_files "${pow[@]}"
+
+exit

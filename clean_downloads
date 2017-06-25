@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# @todo - codecourse, laracasts, movies
+downloads=(/Users/mike/Downloads/*)
+
+shows=('Arrow' 'The.Flash' 'DCs.Legends.Of.Tomorrow' 'Supergirl' 'The.Walking.Dead' 'The.Big.Bang.Theory');
+
+# for each dir in Downloads
+for (( i = 0; i < ${#downloads[@]}; i++ )); do
+
+    # get the dir name
+    dir="${downloads[$i]##*/}"
+    # replace dir name with periods
+    dir_name=${dir// /.}
+
+    # for each item in. tv-shows array
+    for (( j = 0; j < ${#shows[@]}; j++ )); do
+
+        # check if part of the name of the dir matches any in the array
+        # @todo - make case insensitive
+        if [[ "${dir_name}" == *"${shows[$j]}"* ]]; then
+
+            # @todo - allow for spaces
+
+            # if it does, then go in to the dir
+            for file in "${downloads[$i]}"/*; do
+                # @todo - mp4, avi
+                if [
+                    [ "${file}" == *".mkv"* ] ||
+                    [ "${file}" == *".mp4"* ] ||
+                    [ "${file}" == *".avi"* ]
+                ]; then
+                    # @todo - check file does not already exist
+                    echo "moving $file to /Users/mike/media/${shows[$j]}/"
+                    # and move them in to a dir with the same name from the array element that was matched
+                    mv $file "/Users/mike/media/${shows[$j]}/"
+                fi
+            done
+
+            # then after you've taken everything, just delete that directory
+            rm -rf "${downloads[$i]}"
+        fi
+    done
+done
