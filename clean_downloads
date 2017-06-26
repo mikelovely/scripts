@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# @todo - codecourse, laracasts, movies
 downloads=(/Users/mike/Downloads/*)
 
-shows=('Arrow' 'The.Flash' 'DCs.Legends.Of.Tomorrow' 'Supergirl' 'The.Walking.Dead' 'The.Big.Bang.Theory');
+IFS=$'\n' read -d '' -r -a items < $1
 
 # for each dir in Downloads
 for (( i = 0; i < ${#downloads[@]}; i++ )); do
@@ -13,27 +12,27 @@ for (( i = 0; i < ${#downloads[@]}; i++ )); do
     # replace dir name with periods
     dir_name=${dir// /.}
 
-    # for each item in. tv-shows array
-    for (( j = 0; j < ${#shows[@]}; j++ )); do
+    # for each item in array
+    for (( j = 0; j < ${#items[@]}; j++ )); do
 
         # check if part of the name of the dir matches any in the array
         # @todo - make case insensitive
-        if [[ "${dir_name}" == *"${shows[$j]}"* ]]; then
+        if [[ "${dir_name}" == *"${items[$j]}"* ]]; then
 
             # @todo - allow for spaces
 
             # if it does, then go in to the dir
             for file in "${downloads[$i]}"/*; do
-                # @todo - mp4, avi
                 if [
                     [ "${file}" == *".mkv"* ] ||
                     [ "${file}" == *".mp4"* ] ||
                     [ "${file}" == *".avi"* ]
                 ]; then
                     # @todo - check file does not already exist
-                    echo "moving $file to /Users/mike/media/${shows[$j]}/"
+                    # @todo - check folder already exists. create it if it doesn't
+                    echo "moving $file to /Users/mike/media/${items[$j]}/"
                     # and move them in to a dir with the same name from the array element that was matched
-                    mv $file "/Users/mike/media/${shows[$j]}/"
+                    mv $file "/Users/mike/media/${items[$j]}/"
                 fi
             done
 
