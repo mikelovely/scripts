@@ -23,11 +23,11 @@ for (( i = 0; i < ${#downloads[@]}; i++ )); do
 
             # if it does, then go in to the dir
             for file in "${downloads[$i]}"/*; do
-                if [
-                    [ "${file}" == *".mkv"* ] ||
-                    [ "${file}" == *".mp4"* ] ||
-                    [ "${file}" == *".avi"* ]
-                ]; then
+                if [[
+                    "${file}" == *".mkv"* ||
+                    "${file}" == *".mp4"* ||
+                    "${file}" == *".avi"*
+                ]]; then
                     # @todo - check file does not already exist
                     # @todo - check folder already exists. create it if it doesn't
                     echo "moving $file to /Users/mike/media/${items[$j]}/"
