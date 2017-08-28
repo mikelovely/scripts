@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# to use, run following command:
+#
+# $ tidy_up
+#
+# This will remove pow files and virtual host files that are not being used.
+
 repositories=(/Users/mike/code/*)
 sites_available_conf=(/etc/apache2/sites-available/*.conf)
 sites_enabled_conf=(/etc/apache2/sites-enabled/*.conf)

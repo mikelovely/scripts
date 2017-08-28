@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# to use, run following command:
+#
+# $ clean_downloads <filename.txt>
+#
+# This will clean your downloads for you.
+
 downloads=(/Users/mike/Downloads/*)
 
 IFS=$'\n' read -d '' -r -a items < $1
