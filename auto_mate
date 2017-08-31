@@ -1,9 +1,8 @@
 #!/bin/bash
 
-# to use, run following command (one of two options):
+# to use, run following command:
 #
-# $ sudo auto_mate example
-# $ sudo auto_mate example public
+# $ sudo auto_mate
 #
 # this will create a pow file, a apache virtual host file, restart apache, restart pow.
 
