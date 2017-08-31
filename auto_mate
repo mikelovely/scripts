@@ -7,30 +7,33 @@
 #
 # this will create a pow file, a apache virtual host file, restart apache, restart pow.
 
-if [ -z $1 ]; then
-    echo "...Directory name is required"
-    exit
-else
-    echo "...Creating virtual-host for ${1}"
+# User must specify a directory
+read -p "Project name: " project
+
+if [ ! ${project} ]; then
+    echo "Project name is required"
+    exit 1
 fi
+
+# User must specify an optional subfolder
+read -p "Subfolder (or press enter to leave blank): " sub_directory
 
 sub=""
 
-if ! [[ -z $2 ]]; then
-  echo "...Subfolder '${2}' was provided"
-  sub="/$2"
+if [[ ${sub_directory} ]]; then
+  sub="/${sub_directory}"
 fi
 
 sudo echo "<VirtualHost *:80>
-    DocumentRoot '/Users/mike/code/${1}${sub}'
-    ServerName ${1}.dev
-</VirtualHost>" > /etc/apache2/sites-available/"${1}".conf
+    DocumentRoot '${HOME}/code/${project}${sub}'
+    ServerName ${project}.dev
+</VirtualHost>" > /etc/apache2/sites-available/"${project}".conf
 
-sudo ln -s /etc/apache2/sites-available/"${1}".conf /etc/apache2/sites-enabled/"${1}".conf
-sudo echo '127.0.0.1:80' > ~/.pow/"${1}"
+sudo ln -s /etc/apache2/sites-available/${project}.conf /etc/apache2/sites-enabled/${project}.conf
+sudo echo '127.0.0.1:80' > ~/.pow/${project}
 sudo apachectl restart
 powder up
 
-echo "...Environment ready. Go to: ${1}.dev"
+echo "Environment ready. Go to: ${project}.dev"
 
-exit
+exit 0

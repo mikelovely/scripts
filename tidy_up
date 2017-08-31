@@ -6,28 +6,53 @@
 #
 # This will remove pow files and virtual host files that are not being used.
 
-repositories=(/Users/mike/code/*)
-sites_available_conf=(/etc/apache2/sites-available/*.conf)
-sites_enabled_conf=(/etc/apache2/sites-enabled/*.conf)
-pow=(/Users/mike/.pow/*)
+in_array() {
+    local haystack=${1}[@]
+    local needle=${2}
 
-function remove_files() {
+    for i in ${!haystack}; do
+
+        folder_name="${i##*/}"
+
+        if [[ ${folder_name} == ${needle} ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+remove_files() {
     arr=("$@")
     for i in "${arr[@]}"; do
         path_to_file="${i}"
         directory_name="${path_to_file##*/}"
-        if ! [[ "${repositories[*]}" == *"${directory_name%.*}"* ]]; then
-            echo "removing.... ${path_to_file}"
+        directory="${directory_name%.*}"
+
+        if ! in_array repositories ${directory} ; then
+            echo "Deleting file: ${path_to_file}"
             sudo rm ${path_to_file}
         fi
     done
 }
 
+repositories=(${HOME}/code/*)
+sites_available_conf=(/etc/apache2/sites-available/*.conf)
+sites_enabled_conf=(/etc/apache2/sites-enabled/*.conf)
+pow=(${HOME}/.pow/*)
+
+echo "Looping through sites-enabled directory"
 remove_files "${sites_enabled_conf[@]}"
+
+echo "Looping through sites-available directory"
 remove_files "${sites_available_conf[@]}"
+
+echo "Looping through .pow directory"
 remove_files "${pow[@]}"
 
+echo "Restarting apache"
 sudo apachectl restart
+echo "Powdering up"
 powder up
 
-exit
+exit 0
