@@ -8,14 +8,8 @@
 
 in_array() {
 
-    # echo ${1}[@]
-    # exit
-
     local haystack=${1}[@]
     local needle=${2}
-
-    echo ${!haystack}
-    exit
 
     for i in ${!haystack}; do
         if [[ ${i} == ${needle} ]]; then
