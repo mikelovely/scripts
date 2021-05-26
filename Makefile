@@ -1,5 +1,5 @@
 
-default: brew-install brew-packages brew-casks brew-mas
+default: brew-install brew-packages brew-casks brew-mas git
 
 brew-install:
 	./brew/install.sh
@@ -12,3 +12,6 @@ brew-casks: brew-install
 
 brew-mas: brew-install
 	./brew/mas.sh
+
+git: brew-install
+	./git/install.sh
