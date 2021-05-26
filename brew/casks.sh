@@ -15,7 +15,7 @@ CASKS=(
 echo ""
 echo "Installing casks from Homebrew..."
 echo "================================="
-brew cask install ${CASKS[@]}
+brew install --cask ${CASKS[@]}
 
 echo ""
 echo "Cleaning up..."
